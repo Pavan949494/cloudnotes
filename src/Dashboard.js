@@ -101,8 +101,11 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    if (user) fetchNotes();
-
+    const getNotes = async () => {
+      if (user) await fetchNotes();
+    };
+    getNotes();
+  
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
@@ -110,7 +113,7 @@ function Dashboard() {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [user]);
+  }, [user, fetchNotes]);
 
   return (
     <>
