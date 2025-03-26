@@ -109,8 +109,10 @@ function Dashboard() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (user) fetchNotes();
-
+    if (user) {
+      fetchNotes();
+    }
+  
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
@@ -118,7 +120,7 @@ function Dashboard() {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [user]);
+  }, [user, fetchNotes]);
 
   return (
     <>/* rest of the component remains unchanged */</>
