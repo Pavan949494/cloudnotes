@@ -1,5 +1,5 @@
 // src/Dashboard.js
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { auth, db } from './firebase';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -28,13 +28,13 @@ function Dashboard() {
 
   const user = auth.currentUser;
 
-  const fetchNotes = useCallback(async () => {
+  const fetchNotes = async () => {
     const notesRef = collection(db, 'users', user.uid, 'notes');
     const q = query(notesRef, orderBy('createdAt', 'desc'));
     const snapshot = await getDocs(q);
     const notesList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     setNotes(notesList);
-  }, [user]);
+  };
 
   const loadNote = async (noteId) => {
     const noteRef = doc(db, 'users', user.uid, 'notes', noteId);
@@ -107,19 +107,18 @@ function Dashboard() {
     alert('Settings clicked!');
   };
 
- // eslint-disable-next-line react-hooks/exhaustive-deps
-useEffect(() => {
-  if (user) fetchNotes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (user) fetchNotes();
 
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setShowDropdown(false);
-    }
-  };
-  document.addEventListener('mousedown', handleClickOutside);
-  return () => document.removeEventListener('mousedown', handleClickOutside);
-}, [user]);
-
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [user]);
 
   return (
     <>/* rest of the component remains unchanged */</>
