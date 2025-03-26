@@ -107,17 +107,19 @@ function Dashboard() {
     alert('Settings clicked!');
   };
 
-  useEffect(() => {
-    if (user) fetchNotes();
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+useEffect(() => {
+  if (user) fetchNotes();
 
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [user, fetchNotes]);
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown(false);
+    }
+  };
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => document.removeEventListener('mousedown', handleClickOutside);
+}, [user]);
+
 
   return (
     <>/* rest of the component remains unchanged */</>
