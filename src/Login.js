@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
-import Particles from 'react-tsparticles';
-import { loadFull } from 'tsparticles';
+import GameCanvas from './GameCanvas';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -13,15 +12,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      if (!user.emailVerified) {
-        await auth.signOut();
-        alert("Please verify your email before logging in.");
-        return;
-      }
-
+      await signInWithEmailAndPassword(auth, email, password);
       navigate('/dashboard');
     } catch (error) {
       alert(error.message);
@@ -33,57 +24,24 @@ function Login() {
       alert("Please enter your email first.");
       return;
     }
-
     sendPasswordResetEmail(auth, email)
       .then(() => alert('Password reset email sent!'))
-      .catch((err) => alert(err.message));
-  };
-
-  const particlesInit = async (main) => {
-    await loadFull(main);
+      .catch(err => alert(err.message));
   };
 
   return (
     <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-      {/* Background animation */}
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          background: {
-            color: '#f0f2f5'
-          },
-          fpsLimit: 60,
-          interactivity: {
-            events: {
-              onClick: { enable: true, mode: 'push' },
-              onHover: { enable: true, mode: 'repulse' }
-            },
-            modes: {
-              push: { quantity: 4 },
-              repulse: { distance: 100, duration: 0.4 }
-            }
-          },
-          particles: {
-            color: { value: '#007BFF' },
-            links: { enable: true, color: '#007BFF', distance: 150 },
-            move: { enable: true, speed: 2 },
-            number: { value: 50 },
-            size: { value: { min: 1, max: 3 } }
-          }
-        }}
-        style={{
-          position: 'absolute',
-          zIndex: -1,
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%'
-        }}
-      />
-
-      {/* Login box */}
-      <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+      <GameCanvas />
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
         <div style={{ background: '#fff', padding: '40px', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', width: '100%', maxWidth: '400px' }}>
           <div style={{ textAlign: 'center', marginBottom: '20px' }}>
             <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#007BFF' }}>☁️ CLOUD <span style={{ color: '#333' }}>NOTES</span></div>
@@ -97,30 +55,17 @@ function Login() {
             onChange={(e) => setEmail(e.target.value)}
             style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '6px' }}
           />
-
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') handleLogin();
-            }}
+            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
             style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '6px' }}
           />
-
           <button
             onClick={handleLogin}
-            style={{
-              width: '100%',
-              padding: '10px',
-              backgroundColor: '#007BFF',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-              marginBottom: '10px'
-            }}
+            style={{ width: '100%', padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', marginBottom: '10px' }}
           >
             Login
           </button>
