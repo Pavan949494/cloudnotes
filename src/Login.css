@@ -1,26 +1,23 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: url('/images/login-bg.png') no-repeat center center fixed;
+/* src/Login.css */
+.login-background {
+    background-image: url('/images/login-bg.png');
     background-size: cover;
-  }
-  
-  .login-container {
+    background-position: center;
+    height: 100vh;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    height: 100vh;
-    padding-right: 60px;
+    font-family: 'Segoe UI', sans-serif;
   }
   
   .login-box {
-    background-color: rgba(255, 255, 255, 0.95);
+    background: white;
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    width: 100%;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
     max-width: 400px;
+    margin-right: 60px;
   }
   
   .logo-title {
@@ -34,7 +31,7 @@ body, html {
   }
   
   .notes {
-    color: #111;
+    color: #111827;
   }
   
   input {
@@ -44,46 +41,42 @@ body, html {
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
-    background: #e8f0fe;
   }
   
   button {
     width: 100%;
     padding: 12px;
-    margin-bottom: 10px;
+    background-color: #3b82f6;
+    color: #fff;
     border: none;
     border-radius: 6px;
     font-weight: bold;
     font-size: 16px;
-    background-color: #3b82f6;
-    color: white;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    margin-bottom: 12px;
+    transition: background-color 0.3s ease;
   }
   
   button:hover {
     background-color: #2563eb;
   }
   
-  .forgot-password {
-    text-align: center;
-    color: #3b82f6;
-    font-size: 14px;
-    margin-top: -5px;
-    margin-bottom: 15px;
+  button.forgot {
     background: none;
+    color: #3b82f6;
     border: none;
-    cursor: pointer;
+    text-align: right;
+    font-size: 14px;
+    margin-bottom: 16px;
   }
   
-  .signup-link {
+  p {
     text-align: center;
     font-size: 14px;
   }
   
-  .signup-link a {
+  a {
     color: #3b82f6;
     text-decoration: none;
-    margin-left: 4px;
   }
   

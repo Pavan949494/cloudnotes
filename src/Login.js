@@ -30,16 +30,19 @@ function Login() {
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') handleLogin();
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
   };
 
   return (
     <div className="login-background">
-      <div className="login-form">
+      <div className="login-box">
         <div className="logo-title">
           ☁️ <span className="cloud">CLOUD</span> <span className="notes">NOTES</span>
         </div>
         <h2>Login</h2>
+
         <input
           type="email"
           placeholder="Email"
@@ -55,11 +58,14 @@ function Login() {
           onKeyDown={handleKeyDown}
         />
         <button onClick={handleLogin}>Login</button>
+
+        <button className="forgot" onClick={handleForgotPassword}>
+          Forgot Password?
+        </button>
+
         <p>
-          <button onClick={handleForgotPassword} className="forgot-password">Forgot Password?</button>
-        </p>
-        <p>
-          Don’t have an account? <a href="/signup">Sign Up</a>
+          Don’t have an account?{' '}
+          <a href="/signup">Sign Up</a>
         </p>
       </div>
     </div>
