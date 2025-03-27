@@ -38,17 +38,17 @@ function Login() {
 
   return (
     <div className="login-container">
-      <GameCanvas />
-      <div className="login-box">
-        <div className="logo-title">☁️ <span className="cloud">CLOUD</span> <span className="notes">NOTES</span></div>
-        <h2>Login</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
+  <GameCanvas />
+  <div className="login-form">  {/* 👈 change login-box to login-form */}
+    <div className="logo-title">☁️ <span className="cloud">CLOUD</span> <span className="notes">NOTES</span></div>
+    <h2>Login</h2>
+    <input
+      type="email"
+      placeholder="Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      onKeyDown={handleKeyDown}
+    />
         <input
           type="password"
           placeholder="Password"
