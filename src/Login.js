@@ -1,9 +1,8 @@
 // src/Login.js
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
-import { sendPasswordResetEmail } from 'firebase/auth';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -14,28 +13,28 @@ function Login() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-  
+
       if (!user.emailVerified) {
         await auth.signOut();
         alert("Please verify your email before logging in.");
         return;
       }
-  
+
       navigate('/dashboard');
     } catch (error) {
       alert(error.message);
     }
   };
-  
 
   const handleForgotPassword = () => {
     if (!email) {
       alert("Please enter your email first.");
       return;
     }
+
     sendPasswordResetEmail(auth, email)
       .then(() => alert('Password reset email sent!'))
-      .catch(err => alert(err.message));
+      .catch((err) => alert(err.message));
   };
 
   return (
@@ -53,16 +52,32 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
           style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '6px' }}
         />
+
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleLogin();
+            }
+          }}
           style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '6px' }}
         />
+
         <button
           onClick={handleLogin}
-          style={{ width: '100%', padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', marginBottom: '10px' }}
+          style={{
+            width: '100%',
+            padding: '10px',
+            backgroundColor: '#007BFF',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '6px',
+            fontWeight: 'bold',
+            marginBottom: '10px'
+          }}
         >
           Login
         </button>
