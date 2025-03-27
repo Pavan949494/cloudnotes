@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
+import './Login.css';
 import GameCanvas from './GameCanvas';
 
 function Login() {
@@ -21,66 +22,43 @@ function Login() {
 
   const handleForgotPassword = () => {
     if (!email) {
-      alert("Please enter your email first.");
+      alert('Please enter your email first.');
       return;
     }
     sendPasswordResetEmail(auth, email)
       .then(() => alert('Password reset email sent!'))
-      .catch(err => alert(err.message));
+      .catch((err) => alert(err.message));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
+    }
   };
 
   return (
-    <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+    <div className="login-container">
       <GameCanvas />
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}>
-        <div style={{ background: '#fff', padding: '40px', borderRadius: '10px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', width: '100%', maxWidth: '400px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#007BFF' }}>☁️ CLOUD <span style={{ color: '#333' }}>NOTES</span></div>
-            <h2 style={{ marginTop: '10px' }}>Login</h2>
-          </div>
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '6px' }}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-            style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '6px' }}
-          />
-          <button
-            onClick={handleLogin}
-            style={{ width: '100%', padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', marginBottom: '10px' }}
-          >
-            Login
-          </button>
-
-          <p style={{ textAlign: 'right', marginBottom: '10px' }}>
-            <button onClick={handleForgotPassword} style={{ background: 'none', border: 'none', color: '#007BFF', cursor: 'pointer', fontSize: '14px' }}>
-              Forgot Password?
-            </button>
-          </p>
-
-          <p style={{ textAlign: 'center' }}>
-            Don’t have an account?{' '}
-            <a href="/signup" style={{ color: '#007BFF', textDecoration: 'none' }}>Sign Up</a>
-          </p>
-        </div>
+      <div className="login-box">
+        <div className="logo-title">☁️ <span className="cloud">CLOUD</span> <span className="notes">NOTES</span></div>
+        <h2>Login</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+        <button onClick={handleLogin}>Login</button>
+        <button className="forgot" onClick={handleForgotPassword}>Forgot Password?</button>
+        <p className="signup">Don’t have an account? <a href="/signup">Sign Up</a></p>
       </div>
     </div>
   );
