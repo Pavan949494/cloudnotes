@@ -12,12 +12,21 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      if (!user.emailVerified) {
+        await auth.signOut();
+        alert("Please verify your email before logging in.");
+        return;
+      }
+  
       navigate('/dashboard');
     } catch (error) {
       alert(error.message);
     }
   };
+  
 
   const handleForgotPassword = () => {
     if (!email) {

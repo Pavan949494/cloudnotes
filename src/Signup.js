@@ -1,6 +1,6 @@
 // src/Signup.js
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from './firebase';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,23 +10,24 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const validatePassword = (pwd) => {
-    const pattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-    return pattern.test(pwd);
-  };
-
   const handleSignup = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      alert("Passwords do not match.");
       return;
     }
-    if (!validatePassword(password)) {
-      alert("Password must be at least 8 characters, include an uppercase letter and a special character.");
+
+    // Password validation
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\W).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      alert("Password must be at least 8 characters, include 1 uppercase letter, and 1 special character.");
       return;
     }
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard');
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      await sendEmailVerification(userCredential.user);
+      alert('Account created! Please check your email for a verification link before logging in.');
+      navigate('/');
     } catch (error) {
       alert(error.message);
     }
@@ -59,17 +60,16 @@ function Signup() {
           placeholder="Confirm Password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '6px' }}
+          style={{ width: '100%', padding: '10px', marginBottom: '20px', border: '1px solid #ccc', borderRadius: '6px' }}
         />
-
         <button
           onClick={handleSignup}
-          style={{ width: '100%', padding: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold', marginBottom: '10px' }}
+          style={{ width: '100%', padding: '10px', backgroundColor: '#007BFF', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 'bold' }}
         >
           Sign Up
         </button>
 
-        <p style={{ textAlign: 'center' }}>
+        <p style={{ textAlign: 'center', marginTop: '15px' }}>
           Already have an account?{' '}
           <a href="/" style={{ color: '#007BFF', textDecoration: 'none' }}>Login</a>
         </p>
