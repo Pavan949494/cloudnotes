@@ -1,14 +1,14 @@
 /* src/Login.css */
 .login-background {
-    background-image: url('/images/login-bg.png');
+    background-image: url('/images/login-bg.png'); /* 👈 correct path */
     background-size: cover;
     background-position: center;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
-    font-family: 'Segoe UI', sans-serif;
   }
+  
   
   .login-box {
     background: white;
